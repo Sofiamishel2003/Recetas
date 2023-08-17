@@ -1,5 +1,12 @@
 package com.example.recetas
-
+/**
+ * Nombre: Sofía Mishell Velasquez
+ * Carnet: 22049
+ * Proyecto: Laboratorio4
+ * Materia: Programación de plataformas moviles
+ * Archivo: MainActivity.kt
+ * Descripción: aplicación que muestra un recetario con imagen, se puede agregar nuevas recetas, eliminar recetas y no se pueden repetir
+ */
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -47,10 +54,11 @@ fun MyUI() {
         title = { Text(text = "Recetas de la Abuela") }
     )
 }
+//Funcion general/principal: contiene los textfields(inputs) y el boton de agregar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    MyUI()
+    MyUI() //agrega la función de barra que contiene el titulo
     val listaElementos = remember { mutableStateListOf<Elemento>() }
     val nombreReceta = remember { mutableStateOf("") }
     val urlImagen = remember { mutableStateOf("") }
@@ -74,11 +82,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = {
+                    //comprobar que ambos textfields no estén vacios
                     if (nombreReceta.value.isNotBlank() && urlImagen.value.isNotBlank()) {
                         // Comprobar si la receta ya existe
                         if (listaElementos.any { it.nombre == nombreReceta.value }) {
+                            // si ya existe saca una bandera llamada receta repetida
                             recetaRepetida.value = true
                         } else {
+                            //si no existe la agrega
                             listaElementos.add(Elemento(nombreReceta.value, urlImagen.value))
                             nombreReceta.value = ""
                             urlImagen.value = ""
@@ -90,6 +101,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 Text("Agregar")
             }
             if (recetaRepetida.value) {
+                //si la receta repetida se vuelve true, saca un mensaje que ya existe
                 Text("La receta ya existe!", color = Color.Red)
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -103,7 +115,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         }
     }
 }
-
+//Funcion de cartas que agrega las recets en su formato imagen-informacióbn
 @Composable
 fun TarjetaReceta(elemento: Elemento, onRemove: () -> Unit) {
     Card(
